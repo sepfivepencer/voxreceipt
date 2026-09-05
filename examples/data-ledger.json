@@ -1,0 +1,21 @@
+{
+  "schema": "voxreceipt.ledger.v1",
+  "datasets": [
+    {
+      "dataset_id": "voxreceipt-procedural-v1",
+      "source_uri": "generated://voxreceipt/procedural-v1",
+      "license_id": "MIT",
+      "allowed_uses": [
+        "training",
+        "validation",
+        "competition",
+        "research",
+        "redistribution"
+      ],
+      "contains_human_voice": false,
+      "competition_use_confirmed": true,
+      "evidence_sha256": "a8f91d866796de733bf566b4c436afbcc22fdce831a039bba90c3695712d8c32",
+      "notes": "Procedurally generated test signal; no recording or human voice is used. The evidence digest identifies this repository's MIT LICENSE file."
+    }
+  ]
+}
