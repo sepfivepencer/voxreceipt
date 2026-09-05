@@ -313,6 +313,16 @@ class LengthAdapter:
         return samples[: self.difference]
 
 
+@dataclass(frozen=True)
+class SilenceAdapter:
+    name: str = "silence-test"
+    version: str = "1"
+    kind: str = "test-only"
+
+    def restore(self, samples: np.ndarray, sample_rate: int) -> np.ndarray:
+        return np.zeros_like(samples)
+
+
 @pytest.mark.parametrize("difference", [-3_001, 3_001])
 def test_restore_rejects_length_and_cleans_created_files(tmp_path: Path, difference: int) -> None:
     source = tmp_path / "input"
@@ -350,7 +360,7 @@ def test_restore_content_gate_can_fail_closed(tmp_path: Path, sine: np.ndarray) 
     write_pcm16_mono(source / "x.wav", sine)
     output = tmp_path / "output"
     with pytest.raises(AdapterError, match="content-proxy"):
-        restore_directory(source, output, LengthAdapter(-100), minimum_content_proxy=1.0)
+        restore_directory(source, output, SilenceAdapter(), minimum_content_proxy=0.9)
     assert list(output.iterdir()) == []
 
 

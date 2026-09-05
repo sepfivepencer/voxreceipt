@@ -13,11 +13,20 @@ from voxreceipt.metrics import (
 from voxreceipt.signals import degrade_signal, synthetic_speechlike
 
 
-def test_identity_content_score_is_near_one(sine: np.ndarray) -> None:
+def test_identity_content_score_is_exact_one(sine: np.ndarray) -> None:
     report = content_preservation(sine, sine)
-    assert report["proxy_score"] == pytest.approx(1.0)
+    assert report["proxy_score"] == 1.0
     assert report["estimated_delay_samples"] == 0
     assert "not proof" in str(report["interpretation"])
+
+
+def test_exact_common_overlap_has_platform_stable_perfect_score() -> None:
+    source = np.linspace(-0.271, 0.193, 4_801, dtype=np.float64)
+    report = content_preservation(source, source[:-137], max_lag=0)
+    assert report["waveform_correlation"] == 1.0
+    assert report["envelope_correlation"] == 1.0
+    assert report["spectral_cosine"] == 1.0
+    assert report["proxy_score"] == 1.0
 
 
 @pytest.mark.parametrize("delay", [-37, -1, 0, 1, 83])

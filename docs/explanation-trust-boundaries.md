@@ -83,6 +83,11 @@ restoration that changes phase or bandwidth. A threshold therefore acts as a tri
 own evaluation protocol. It does not establish semantic equivalence, speaker preservation, or
 compliance with the organizer's content rule.
 
+The proxy scores the delay-aligned overlapping samples; sample-count difference is a separate hard
+gate and report field. An exact prefix can therefore receive a proxy score of 1.0 while still having
+a nonzero sample delta. Exact overlapping arrays are assigned exactly 1.0 so supported numerical
+backends cannot turn equality into a one-ULP pass/fail difference at the maximum threshold.
+
 The paired evaluator reports SI-SDR change when you supply a lawful clean reference. SI-SDR also
 differs from the official NISQA, SIGMOS, and DNSMOS weighted score. VoxReceipt includes none of those
 models and does not estimate a leaderboard result.

@@ -107,12 +107,17 @@ def content_preservation(
     output = _samples(restored, "restored")
     delay = estimate_delay(source, output, max_lag)
     aligned_source, aligned_output = _aligned(source, output, delay)
-    waveform = max(0.0, _correlation(aligned_source, aligned_output))
-    source_envelope = _rms_envelope(aligned_source)
-    output_envelope = _rms_envelope(aligned_output)
-    envelope = max(0.0, _correlation(source_envelope, output_envelope))
-    spectral = _spectral_cosine(aligned_source, aligned_output)
-    score = float(np.clip(0.5 * waveform + 0.3 * envelope + 0.2 * spectral, 0.0, 1.0))
+    if np.array_equal(aligned_source, aligned_output):
+        # Exact equality has an exact score. Taking the dot/norm/FFT path can produce either 1.0
+        # or 1.0 minus one ULP across otherwise supported NumPy wheels and CPU backends.
+        waveform = envelope = spectral = score = 1.0
+    else:
+        waveform = max(0.0, _correlation(aligned_source, aligned_output))
+        source_envelope = _rms_envelope(aligned_source)
+        output_envelope = _rms_envelope(aligned_output)
+        envelope = max(0.0, _correlation(source_envelope, output_envelope))
+        spectral = _spectral_cosine(aligned_source, aligned_output)
+        score = float(np.clip(0.5 * waveform + 0.3 * envelope + 0.2 * spectral, 0.0, 1.0))
     source_rms = float(np.sqrt(np.mean(np.square(aligned_source))))
     output_rms = float(np.sqrt(np.mean(np.square(aligned_output))))
     energy_ratio_db = float(20.0 * np.log10((output_rms + 1e-12) / (source_rms + 1e-12)))
