@@ -43,7 +43,6 @@ include = [
   "/docs",
   "/examples",
   "/.github",
-  "/AI_USAGE.md",
   "/CONTRIBUTING.md",
   "/LICENSE",
   "/README.md",

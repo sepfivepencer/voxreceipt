@@ -67,7 +67,6 @@ subtraction and makes no AI or quality claim.
 - [CLI, Python API, schemas, and constraints](docs/reference.md) (reference)
 - [Trust boundaries, privacy, and metric limits](docs/explanation-trust-boundaries.md)
   (explanation)
-- [AI usage disclosure](AI_USAGE.md)
 - [Contribution rules](CONTRIBUTING.md)
 
 Each document is reachable from this page, and the four user documents link back to one another.
